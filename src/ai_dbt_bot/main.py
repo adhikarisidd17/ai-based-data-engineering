@@ -1,3 +1,4 @@
+import ssl
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from pathlib import Path
@@ -5,7 +6,7 @@ from pathlib import Path
 from .llm_engine import generate_dbt_patch
 from .git_handler import create_branch_and_commit
 from .pr_handler import open_pr
-
+ssl._create_default_https_context = ssl._create_unverified_context
 app = FastAPI()
 REPO_PATH = Path("/workspace/ai-dbt-bot")  # mounted or cloned path
 
