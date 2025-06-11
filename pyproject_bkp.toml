@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ai-dbt-bot"
+version = "0.1.0"
+description = "Automate dbt model changes via LLM + CI/CD"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.95.2"
+uvicorn = {extras = ["standard"], version = "^0.23.2"}
+openai = "^0.29.0"
+gitpython = "^3.1.35"
+PyGithub = "^1.79.0"
+jinja2 = "^3.1.2"
+pydantic = "^1.10.9"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.0"
+
+
+[tool.poetry.scripts]
+ai-dbt-bot = "ai_dbt_bot.main:app"
