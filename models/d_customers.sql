@@ -1,4 +1,5 @@
-select name as customer_name,
+select 
+    name as customer_name,
        email as customer_email,
        phone as customer_phone,
        address as customer_address,
