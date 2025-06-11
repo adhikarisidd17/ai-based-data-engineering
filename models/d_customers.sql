@@ -1,6 +1,8 @@
 select 
     name as customer_name,
        email as customer_email,
+       revenue as revenue,
+       years,
        phone as customer_phone,
        address as customer_address,
        city as customer_city,
