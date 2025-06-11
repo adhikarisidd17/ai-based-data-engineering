@@ -8,6 +8,7 @@ select
        city as customer_city,
        state as customer_state,
        zip_code as customer_zip_code,
-       country as customer_country
+       country as customer_country,
+       sum(revenue)/count(years) as avg_revenue_per_year
        from {{ ref('stg_customers') }}
        where is_active = true
