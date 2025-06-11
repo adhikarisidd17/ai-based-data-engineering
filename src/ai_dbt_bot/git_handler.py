@@ -1,6 +1,7 @@
 from git import Repo
 from pathlib import Path
 import uuid
+from .dbt_modifier import apply_patch
 
 def create_branch_and_commit(repo_path: Path, diff_text: str, analyst_request: str) -> str:
     repo = Repo(repo_path)

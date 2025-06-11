@@ -8,7 +8,7 @@ from .git_handler import create_branch_and_commit
 from .pr_handler import open_pr
 ssl._create_default_https_context = ssl._create_unverified_context
 app = FastAPI()
-REPO_PATH = Path("/workspace/ai-dbt-bot")  # mounted or cloned path
+REPO_PATH = Path.cwd()
 
 class Request(BaseModel):
     analyst_prompt: str
