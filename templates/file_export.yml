@@ -39,3 +39,23 @@ files_batch:
       #  - prd
       cloud_run:
         - prd
+  - integration: file-export-test-csv
+    id : 10002
+    trigger: schedule
+    source:
+      project_id: ag68-p-batch-export-prd-4855
+      dataset: batch_export
+      table: dbbf010
+    sink:
+      file_name: dbbf010_export_%Y%m%d.csv
+      file_format: csv
+      own_bucket:
+        name: ica-parquet-export-prd-poc
+        needed: True
+        service_account: batch-export-hmac@ag68-p-batch-export-prd-4855.iam.gserviceaccount.com
+    deployment:
+      schedule: 0 10 * * *
+      #cloud_scheduler: 
+      #  - prd
+      cloud_run:
+        - prd
