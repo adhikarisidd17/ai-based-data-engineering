@@ -1,3 +1,5 @@
+SELECT id, name, last_name, email, phone_number, dob, age FROM customers;
+
 version: 2
 
 models:
@@ -20,3 +22,5 @@ models:
         description: "Customer's phone number"
       - name: dob
         description: "Date of birth of the customer"
+      - name: age
+        description: "Age of the customer"
