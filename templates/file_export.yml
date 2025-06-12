@@ -14,7 +14,7 @@ files_batch:
         needed: True
         service_account: batch-framework-test@ag68-p-batch-export-prd-4855.iam.gserviceaccount.com
     deployment:
-      schedule: 0 9 * 1 *
+      schedule: 0 9 * * *
       cloud_run:
         - prd
   - integration: file-export-parquet-dbbf015
@@ -50,6 +50,6 @@ files_batch:
         needed: True
         service_account: batch-framework-test@ag68-p-batch-export-prd-4855.iam.gserviceaccount.com
     deployment:
-      schedule: 0 10 * * *
+      schedule: 0 9 * * *
       cloud_run:
         - prd
