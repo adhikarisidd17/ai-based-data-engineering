@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: dbt_sidd
-    project: d25-p-datalab-fg2h
+    project: ad25-p-datalab-fg2h
     dataset: dbt_sidd
 
     tables:

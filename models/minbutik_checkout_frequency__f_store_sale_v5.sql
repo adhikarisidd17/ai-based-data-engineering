@@ -1,5 +1,3 @@
-
-{% set sale_receipt_line = source('dbt_sidd','minbutik_checkout_frequency__f_store_sale_v4') %}
 select
     f.store_id,
     f.d_date_sale,
@@ -16,12 +14,12 @@ select
     f.d_store_cashier_key,
     f.is_receipt_returns_only,
     sum(f.number_of_items) as number_of_items,
-    sum(f.store_sale_amount) as sale_amount_excl_vat,
-    sum(f.store_sale_vat_amount) as sale_vat_amount,
-    sum(f.commission_amount) as commission_amount_excl_vat,
+    sum(f.sale_amount_excl_vat) as sale_amount_excl_vat,
+    sum(f.sale_vat_amount) as sale_vat_amount,
+    sum(f.commission_amount_excl_vat) as commission_amount_excl_vat,
     sum(f.commission_vat_amount) as commission_vat_amount,
     sum(f.margin_amount) as margin_amount
-from sale_receipt_line as f
+from {{source('dbt_sidd','minbutik_checkout_frequency__f_store_sale_v4')}} as f
 group by
     f.store_id,
     f.d_date_sale,
