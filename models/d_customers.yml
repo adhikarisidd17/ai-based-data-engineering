@@ -1,3 +1,20 @@
+Here is the updated content for the `d_customers.sql` and `d_customers.yml` files:
+
+**d_customers.sql**
+```sql
+SELECT 
+    id,
+    name,
+    last_name,
+    email,
+    phone_number,
+    date_of_birth  -- Added new column for date of birth
+FROM 
+    customers;
+```
+
+**d_customers.yml**
+```yaml
 version: 2
 
 models:
@@ -18,5 +35,13 @@ models:
         description: "Customer's email address"
       - name: phone_number
         description: "Customer's phone number"
-      - name: dob
+      - name: date_of_birth  # Updated column name
         description: "Date of birth of the customer"
+
+metrics:
+  - name: date_of_birth
+    description: "The date of birth of the customer, used for age calculations."
+    calculation_method: "latest"
+``` 
+
+Make sure to replace the SQL and YAML content in your respective files with the above updates.
