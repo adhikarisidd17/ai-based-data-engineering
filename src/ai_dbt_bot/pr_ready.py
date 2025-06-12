@@ -8,13 +8,18 @@ import requests
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # Make sure this env var is set
 OWNER        = "adhikarisidd17"
 REPO         = "ai-based-data-engineering"
-PR_NUMBER  = 39  # the PR number you want to mark ready
+
+# Get PR_NUMBER from user input
+try:
+    PR_NUMBER = int(input("Enter the PR number you want to mark ready: "))  # the PR number you want to mark ready
+except ValueError:
+    sys.exit("❌ Please enter a valid integer for the PR number.")
 
 # ——— Authenticate via PyGithub ———
 if not GITHUB_TOKEN:
     sys.exit("❌ Please set the GITHUB_TOKEN environment variable with repo scope.")
 
-gh = Github(GITHUB_TOKEN,verify=False)
+gh = Github(GITHUB_TOKEN, verify=False)
 
 # ——— Authenticate ———
 if not GITHUB_TOKEN:
