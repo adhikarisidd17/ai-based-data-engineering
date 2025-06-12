@@ -1,3 +1,54 @@
+Here is the updated content for both the SQL model and the YAML configuration file, including the new column `avg_selling_price`:
+
+**Updated SQL Model: minbutik_checkout_frequency__f_store_sale_v5.sql**
+
+```sql
+SELECT
+    store_id,
+    store_department_id,
+    store_department_name,
+    f_sale_receipt_key,
+    d_date_sale,
+    sale_datetime_rounded,
+    sale_hour,
+    commission_item_flag,
+    checkout_method_type_name_sw,
+    d_checkout_method_key,
+    checkout_method_name_sw,
+    checkout_station_id,
+    scanning_method_name_sw,
+    SUM(sale_amount_excl_vat) AS store_sale_amount,
+    SUM(sale_amount_excl_vat) * (vat_rate / 100) AS store_sale_vat_amount,
+    SUM(commission_amount) AS commission_amount,
+    SUM(commission_amount) * (vat_rate / 100) AS commission_vat_amount,
+    SUM(deposit_amount) AS deposit_amount,
+    SUM(deposit_amount) * (vat_rate / 100) AS deposit_vat_amount,
+    SUM(margin_amount) AS margin_amount,
+    SUM(number_of_items) AS number_of_items,
+    SUM(sale_amount_excl_vat) / NULLIF(SUM(number_of_items), 0) AS avg_selling_price,
+    d_pos_platform_code
+FROM
+    your_source_table
+GROUP BY
+    store_id,
+    store_department_id,
+    store_department_name,
+    f_sale_receipt_key,
+    d_date_sale,
+    sale_datetime_rounded,
+    sale_hour,
+    commission_item_flag,
+    checkout_method_type_name_sw,
+    d_checkout_method_key,
+    checkout_method_name_sw,
+    checkout_station_id,
+    scanning_method_name_sw,
+    d_pos_platform_code
+```
+
+**Updated YAML Configuration: minbutik_checkout_frequency__f_store_sale.yml**
+
+```yaml
 version: 2
 
 models:
@@ -55,6 +106,7 @@ models:
       - name: deposit_vat_amount
       - name: margin_amount
       - name: number_of_items
+      - name: avg_selling_price
       - name: d_pos_platform_code
 
     versions:
@@ -65,3 +117,6 @@ models:
             - include: all
             - name: is_receipt_store_sale
             - name: is_receipt_returns_only
+```
+
+This includes the new column `avg_selling_price` in both the SQL model and the YAML configuration file.
