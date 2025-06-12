@@ -1,10 +1,12 @@
+````python
+# src/ai_dbt_bot/gh_api_handler.py
 import os
 import re
 import uuid
+import subprocess
 from dotenv import load_dotenv
 from github import Github
 import openai
-import subprocess
 
 # Load environment
 load_dotenv()
@@ -32,21 +34,10 @@ def find_repo_file_paths(suffix: str) -> list:
     return [item.path for item in tree if item.path.lower().endswith(suffix.lower())]
 
 
-def extract_file_paths(prompt: str) -> list:
-    """
-    Extracts candidate file names with extensions from the prompt.
-    E.g. specs: ['models/d_customers.sql', 'models/schema.yml', 'README.md']
-    """
-    # regex for words ending in common extensions
-    exts = ['sql', 'yml', 'yaml', 'md', 'py', 'json', 'csv']
-    pattern = r"\b[\w\/\-\.]+\.({})\b".format("|".join(exts))
-    return re.findall(pattern, prompt, flags=re.IGNORECASE) and re.findall(pattern, prompt, flags=re.IGNORECASE)
-
 def run_sqlfluff_fix(content: str, filename: str) -> str:
     """
     Runs sqlfluff fix on the given SQL content and returns the fixed SQL.
     """
-    # Use stdin input and specify filename for dialect/context
     proc = subprocess.run([
         "sqlfluff", "fix", "-",
         "--dialect", "bigquery",
@@ -56,7 +47,8 @@ def run_sqlfluff_fix(content: str, filename: str) -> str:
         raise RuntimeError(f"SQLFluff fix failed for {filename}: {proc.stderr.decode()}")
     return proc.stdout.decode()
 
-def generate_updated_content(original: str, prompt: str, file_type: str) -> str:
+
+def generate_updated_content(original: str, prompt: str, file_type: str, file_path: str) -> str:
     """
     Uses LLM to return full updated file content for any file type.
     Instructs LLM not to wrap with triple backticks.
@@ -65,7 +57,7 @@ def generate_updated_content(original: str, prompt: str, file_type: str) -> str:
         "You are a coding assistant. "
         "Don't add ``` lines before start and end of the file. "
         f"The user requests to modify this {file_type} file as follows: '{prompt}'.\n"
-        f"Here is the original content:"
+        "Here is the original content:"
     )
     user_msg = original
     resp = openai.ChatCompletion.create(
@@ -79,7 +71,7 @@ def generate_updated_content(original: str, prompt: str, file_type: str) -> str:
     updated = resp.choices[0].message.content.strip()
     # Run lint fix for SQL files
     if file_type.lower() == 'sql':
-        updated = run_sqlfluff_fix(updated, path)
+        updated = run_sqlfluff_fix(updated, file_path)
     return updated
 
 
@@ -107,10 +99,10 @@ def create_pr_for_prompt(analyst_prompt: str) -> str:
     """
     Generic workflow for modifying any files in the repo:
     1. Extract target file names from prompt
-    2. Locate paths in repo
-    3. Create feature branch off default
-    4. For each file, fetch original, regenerate content via LLM, update via API
-    5. Create PR with a summary title
+    2. Locate files
+    3. Create feature branch
+    4. LLM + lint fix updates
+    5. Create PR
     """
     # 1. Extract file names
     file_names = re.findall(r"\b[\w\/\-\.]+\.(?:sql|yml|yaml|md|py|json|csv)\b", analyst_prompt, flags=re.IGNORECASE)
@@ -120,10 +112,10 @@ def create_pr_for_prompt(analyst_prompt: str) -> str:
     # 2. Locate full paths
     file_paths = []
     for fname in file_names:
-        matches = [p for p in find_repo_file_paths(os.path.basename(fname)) if p.lower().endswith(fname.lower())]
+        basename = os.path.basename(fname)
+        matches = [p for p in find_repo_file_paths(basename) if p.lower().endswith(fname.lower())]
         if not matches:
             raise FileNotFoundError(f"File '{fname}' not found in repo")
-        # take first match
         file_paths.append(matches[0])
 
     # 3. Create branch
@@ -133,19 +125,19 @@ def create_pr_for_prompt(analyst_prompt: str) -> str:
 
     # 4. Update each file
     updated_paths = []
-    for path in file_paths:
-        content_file = repo.get_contents(path, ref=DEFAULT_BRANCH)
+    for file_path in file_paths:
+        content_file = repo.get_contents(file_path, ref=DEFAULT_BRANCH)
         original = content_file.decoded_content.decode()
-        ext = os.path.splitext(path)[1].lstrip('.')
-        updated = generate_updated_content(original, analyst_prompt, ext)
+        ext = os.path.splitext(file_path)[1].lstrip('.')
+        updated = generate_updated_content(original, analyst_prompt, ext, file_path)
         repo.update_file(
-            path=path,
-            message=f"chore: update {path} per analyst request",
+            path=file_path,
+            message=f"chore: update {file_path} per analyst request",
             content=updated,
             sha=content_file.sha,
             branch=branch_name
         )
-        updated_paths.append(path)
+        updated_paths.append(file_path)
 
     # 5. Open PR
     title = generate_summary(analyst_prompt) or f"Update files: {', '.join(updated_paths)}"
@@ -156,3 +148,4 @@ def create_pr_for_prompt(analyst_prompt: str) -> str:
         base=DEFAULT_BRANCH
     )
     return pr.html_url
+````
