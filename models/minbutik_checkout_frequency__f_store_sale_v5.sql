@@ -19,7 +19,8 @@ select
     sum(f.commission_amount_excl_vat) as commission_amount_excl_vat,
     sum(f.commission_vat_amount) as commission_vat_amount,
     sum(f.margin_amount) as margin_amount
-from {{ source('dbt_sidd','minbutik_checkout_frequency__f_store_sale_v4') }} as f
+from
+    {{ source('dbt_sidd','minbutik_checkout_frequency__f_store_sale_v4') }} as f
 group by
     f.store_id,
     f.d_date_sale,
