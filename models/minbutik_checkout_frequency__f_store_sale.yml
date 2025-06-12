@@ -55,6 +55,7 @@ models:
       - name: deposit_vat_amount
       - name: margin_amount
       - name: number_of_items
+      - name: avg_selling_price
       - name: d_pos_platform_code
 
     versions:
