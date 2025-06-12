@@ -56,6 +56,8 @@ models:
       - name: margin_amount
       - name: number_of_items
       - name: d_pos_platform_code
+      - name: is_receipt_store_sale
+      - name: is_receipt_returns_only
 
     versions:
       - v: 5
@@ -63,5 +65,3 @@ models:
           enabled: true
           columns:
             - include: all
-            - name: is_receipt_store_sale
-            - name: is_receipt_returns_only
