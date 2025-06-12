@@ -18,7 +18,8 @@ select
     sum(f.sale_vat_amount) as sale_vat_amount,
     sum(f.commission_amount_excl_vat) as commission_amount_excl_vat,
     sum(f.commission_vat_amount) as commission_vat_amount,
-    sum(f.margin_amount) as margin_amount
+    sum(f.margin_amount) as margin_amount,
+    case when sum(f.number_of_items) > 0 then sum(f.sale_amount_excl_vat) / sum(f.number_of_items) else 0 end as avg_selling_price
 from {{source('dbt_sidd','minbutik_checkout_frequency__f_store_sale_v4')}} as f
 group by
     f.store_id,
@@ -35,3 +36,7 @@ group by
     f.is_receipt_store_sale,
     f.d_store_cashier_key,
     f.is_receipt_returns_only
+
+# In the minbutik_checkout_frequency__f_store_sale.yml file, add the following:
+# - name: avg_selling_price
+#   description: "Average selling price calculated as sum(sale_amount_excl_vat) / sum(number_of_items)"
