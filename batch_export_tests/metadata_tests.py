@@ -1,4 +1,4 @@
-from tests.metadata_models import FileExportsMetadata, FileExportsMetadataList, KafkaMetadata, KafkaMetadataList
+from batch_export_tests.metadata_models import FileExportsMetadata, FileExportsMetadataList, KafkaMetadata, KafkaMetadataList
 
 def test_file_exports_metadata_collection(file_exports_metadata):
     FileExportsMetadataList(rows=file_exports_metadata)
