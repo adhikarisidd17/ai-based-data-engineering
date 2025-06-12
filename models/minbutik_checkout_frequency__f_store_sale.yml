@@ -56,6 +56,7 @@ models:
       - name: margin_amount
       - name: number_of_items
       - name: d_pos_platform_code
+      - name: avg_selling_price
 
     versions:
       - v: 5
