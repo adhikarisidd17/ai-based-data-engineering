@@ -52,7 +52,8 @@ select
     sum(f.store_sale_vat_amount) as sale_vat_amount,
     sum(f.commission_amount) as commission_amount_excl_vat,
     sum(f.commission_vat_amount) as commission_vat_amount,
-    sum(f.margin_amount) as margin_amount
+    sum(f.margin_amount) as margin_amount,
+    sum(f.store_sale_amount) / nullif(sum(f.number_of_items), 0) as avg_selling_price -- New column for average selling price
 from sale_receipt_line as f
 inner join {{ ref('conlaybi_store__d_store') }} ds using (d_store_key)
 inner join {{ ref("minbutik_article_analysis__d_store") }} fl using (store_id)
@@ -120,3 +121,7 @@ from real_stores
 union all
 select *
 from demo_store
+
+# In the corresponding YAML file (minbutik_checkout_frequency__f_store_sale.yml), add the following line under the appropriate section:
+# - avg_selling_price: 
+#     description: "Average selling price calculated as sum(store_sales_amount) / sum(number_of_items)"
