@@ -55,6 +55,7 @@ models:
       - name: deposit_vat_amount
       - name: margin_amount
       - name: number_of_items
+      - name: avg_selling_price
       - name: d_pos_platform_code
 
     versions:
@@ -65,3 +66,10 @@ models:
             - include: all
             - name: is_receipt_store_sale
             - name: is_receipt_returns_only
+
+avg_selling_price:
+  description: Average selling price calculated as sum(sale_amount_excl_vat)/sum(number_of_items)
+  type: numeric
+  tests:
+    - not_null
+    - unique
