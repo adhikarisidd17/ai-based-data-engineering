@@ -66,7 +66,9 @@ def generate_updated_content(original: str, prompt: str, file_type: str) -> str:
     Uses LLM to return full updated file content for SQL or YAML.
     """
     sys_msg = (
-        f"You are a dbt expert. The user requests: '{prompt}'.\n"
+        f"You are a dbt expert. "
+        "Don't add ``` lines before start and end of the models since they are .sql files. "
+        f"The user requests: '{prompt}'.\n"
         f"Below is the original {file_type} file. Return the entire updated {file_type} content, applying only needed changes."
     )
     user_msg = f"```\n{original}\n```"
@@ -80,6 +82,24 @@ def generate_updated_content(original: str, prompt: str, file_type: str) -> str:
     )
     return response.choices[0].message.content.strip()
 
+def generate_summary(prompt: str) -> str:
+    """
+    Uses LLM to generate a concise PR title (max 60 chars) summarizing the prompt.
+    """
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": (
+                "You are a helpful assistant that creates concise PR titles "
+                "(no more than 60 characters) summarizing the user's request."
+            )},
+            {"role": "user",   "content": prompt}
+        ],
+        temperature=0,
+        max_tokens=20
+    )
+    title = response.choices[0].message.content.strip().strip('"')
+    return title
 
 def create_pr_for_prompt(analyst_prompt: str) -> str:
     """
@@ -133,9 +153,12 @@ def create_pr_for_prompt(analyst_prompt: str) -> str:
                      sha=yml_file.sha,
                      branch=branch_name)
 
-    # 5. Open PR
+    # 5. Summary title and PR
+    pr_title = generate_summary(analyst_prompt)
+    if not pr_title:
+        pr_title = f"Update {model} model"
     pr = repo.create_pull(
-        title=f"Automated PR ({model}): {analyst_prompt[:60]}",
+        title=pr_title,
         body=f"Automated change for model `{model}` per request:\n> {analyst_prompt}",
         head=branch_name,
         base=DEFAULT_BRANCH
