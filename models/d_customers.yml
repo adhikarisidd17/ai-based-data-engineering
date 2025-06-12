@@ -20,3 +20,6 @@ models:
         description: "Customer's phone number"
       - name: dob
         description: "Date of birth of the customer"
+      - name: address
+        description: "Customer's residential address"
+        data_type: "string"
