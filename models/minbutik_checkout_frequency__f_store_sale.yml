@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: minbutik_checkout_frequency__f_store_sale
+    latest_version: 4
+    config:
+      materialized: incremental
+      incremental_strategy: insert_overwrite
+
+      partition_by:
+        field: d_date_sale
+        data_type: date
+        granularity: day
+      
+      partition_expiration_days: 800
+
+      cluster_by:
+        - store_id
+
+      backfill_max_partitions: 400
+      tags:
+        - BICA D&A MinButik
+        - pos
+        - intraday
+        - backfill
+      intraday_exceptions:
+         - conlaybi_consumer_sales__d_sale_receipt_info
+         - conlaybi_consumer_sales__d_checkout_method
+
+      meta:
+        owner: BICA D&A MinButik
+        model_maturity: development
+        contains_pii: false
+
+    description: Base sale table used for creating the cash register frequency reports
+    columns:
+      - name: store_id
+      - name: store_department_id
+      - name: store_department_name
+      - name: f_sale_receipt_key
+      - name: d_date_sale
+      - name: sale_datetime_rounded
+      - name: sale_hour
+      - name: commission_item_flag
+      - name: checkout_method_type_name_sw
+      - name: d_checkout_method_key
+      - name: checkout_method_name_sw
+      - name: checkout_station_id
+      - name: scanning_method_name_sw
+      - name: store_sale_amount
+      - name: store_sale_vat_amount
+      - name: commission_amount
+      - name: commission_vat_amount
+      - name: deposit_amount
+      - name: deposit_vat_amount
+      - name: margin_amount
+      - name: number_of_items
+      - name: d_pos_platform_code
+
+    versions:
+      - v: 4
+        config:
+          enabled: true
+          columns:
+            - include: all
+            - name: is_receipt_store_sale
+            - name: is_receipt_returns_only
