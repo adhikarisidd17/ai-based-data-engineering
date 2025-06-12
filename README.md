@@ -3,11 +3,10 @@
 
 This project helps your team automate common data engineering tasks—like adding new columns or renaming fields in your dbt models—by simply sending a request. You can use it directly (if you know which files to edit) or through a friendly, high-level translator (for non-technical users).
 
----
 
 ## 📖 Overview
 
-**1. PR-Bot Service** (`/requests` endpoint)  
+1. **PR-Bot Service** (`/requests` endpoint)  
    - Receives a technical request: a list of file names plus a clear instruction for each file.  
    - Uses AI to update your dbt models (SQL/YAML), creates a draft pull request, and lets you iterate until you’re happy.
 
@@ -19,7 +18,6 @@ This project helps your team automate common data engineering tasks—like addin
    - The PR starts as a draft. You can send follow-up edits to the same draft.  
    - When you reply with **Confirm** or **Looks good**, the draft is automatically marked *Ready for review*.
 
----
 
 ## ⚙️ Prerequisites
 
@@ -28,7 +26,6 @@ This project helps your team automate common data engineering tasks—like addin
 - **OpenAI API Key** (`OPENAI_API_KEY`)  
 - **(Optional)** Poetry or pip for dependency management
 
----
 
 ## 🔧 Setup
 
