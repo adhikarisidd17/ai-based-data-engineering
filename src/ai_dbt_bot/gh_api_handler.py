@@ -1,5 +1,3 @@
-````python
-# src/ai_dbt_bot/gh_api_handler.py
 import os
 import re
 import uuid
@@ -148,4 +146,3 @@ def create_pr_for_prompt(analyst_prompt: str) -> str:
         base=DEFAULT_BRANCH
     )
     return pr.html_url
-````
