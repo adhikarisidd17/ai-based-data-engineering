@@ -20,3 +20,6 @@ models:
         description: "Customer's phone number"
       - name: dob
         description: "Date of birth of the customer"
+      - name: age
+        description: "Age of the customer"
+        data_type: integer
