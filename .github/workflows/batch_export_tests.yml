@@ -9,6 +9,9 @@ on:
 jobs:
   batch-export-tests:
     runs-on: ubuntu-latest
+    env:
+      # Ensure test directory is on PYTHONPATH
+      PYTHONPATH: ${{ github.workspace }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -21,11 +24,16 @@ jobs:
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
-          export PATH="$HOME/.local/bin:$PATH"
+          echo "export PATH=\"$HOME/.local/bin:$PATH\"" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |
           poetry install --no-root
+
+      - name: Make test folder a package
+        run: |
+          # Ensure tests folder is recognized as a Python package
+          touch batch_export_tests/__init__.py
 
       - name: Run batch export metadata tests
         run: |
