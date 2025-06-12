@@ -57,4 +57,5 @@ files_batch:
       schedule: 0 10 * * *
       cloud_run:
         - prd
+    own_bucket:
       service_account: batch-framework-test@ag68-p-batch-export-prd-4855.iam.gserviceaccount.com
