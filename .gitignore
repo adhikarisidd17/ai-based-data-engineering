@@ -1,5 +1,5 @@
 .env
-**/__pycache__/
+**pycache**
 **.pytest**
 **.lock**
 **/dbt_packages/**
@@ -9,3 +9,4 @@
 **logs**
 **.user**
 **poetry.lock**
+**__pycache__/**

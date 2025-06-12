@@ -60,6 +60,7 @@ def generate_updated_content(original: str, prompt: str, file_type: str, target_
     """
     system_message = (
         "You are a coding assistant. Do not wrap your output in triple backticks. "
+        "Do not include any comments or explanations. "
         f"User request: '{prompt}'. Provide the full updated content of this file."
     )
     response = openai.ChatCompletion.create(
