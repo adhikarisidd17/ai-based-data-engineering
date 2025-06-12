@@ -1,6 +1,5 @@
-name: DBT Compile Check
+name: DBT Compile Check 
 
-# Trigger on PRs touching SQL models
 on:
   pull_request:
     paths:
@@ -9,9 +8,19 @@ on:
 jobs:
   dbt-compile:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write          # Allow OIDC token exchange
+      contents: read          # Read repo contents
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Authenticate to GCP via Workload Identity
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: 'projects/70883618164/locations/global/workloadIdentityPools/workload-identity-pool-nonprod/providers/gha-dbt-nonprod'
+          service_account: 'svc-gha-dbt@ab73-np-bica-wif-82db.iam.gserviceaccount.com'
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -26,14 +35,15 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install
-          # Install DBT and BigQuery adapter
+
+      - name: Install dbt and BigQuery adapter
+        run: |
           poetry run pip install dbt-core dbt-bigquery
 
       - name: Install DBT dependencies
         run: |
           poetry run dbt deps
 
-      - name: Run DBT compile
+      - name: dbt compile
         run: |
-          # Adjust --profiles-dir if your profiles.yml is in a custom location
-          poetry run dbt compile --profiles-dir .
+            poetry run dbt compile --profiles-dir .
