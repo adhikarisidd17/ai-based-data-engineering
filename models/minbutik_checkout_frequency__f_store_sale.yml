@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: minbutik_checkout_frequency__f_store_sale
-    latest_version: 4
+    latest_version: 5
     config:
       materialized: incremental
       incremental_strategy: insert_overwrite
@@ -58,7 +58,7 @@ models:
       - name: d_pos_platform_code
 
     versions:
-      - v: 4
+      - v: 5
         config:
           enabled: true
           columns:

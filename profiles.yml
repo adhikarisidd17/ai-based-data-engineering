@@ -1,0 +1,13 @@
+etlapp:
+  outputs:
+    dev:
+      dataset: dbt_sidd
+      job_execution_timeout_seconds: 600
+      job_retries: 1
+      location: EU
+      method: oauth
+      priority: interactive
+      project: ad25-p-datalab-fg2h
+      threads: 10
+      type: bigquery
+  target: dev

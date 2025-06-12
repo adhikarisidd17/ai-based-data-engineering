@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: dbt_sidd
+    project: d25-p-datalab-fg2h
+    dataset: dbt_sidd
+
+    tables:
+      - name: minbutik_checkout_frequency__f_store_sale_v4

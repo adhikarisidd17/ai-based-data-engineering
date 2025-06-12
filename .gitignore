@@ -1,4 +1,11 @@
 .env
 **/__pycache__/
 **.pytest**
-poetry.lock
+**.lock**
+**/dbt_packages/**
+**target/**
+**/dbt_modules/**
+**-lock**
+**logs**
+**.user**
+**poetry.lock**
