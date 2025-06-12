@@ -4,6 +4,7 @@ import uuid
 from dotenv import load_dotenv
 from github import Github
 import openai
+import subprocess
 
 # Load environment
 load_dotenv()
@@ -41,6 +42,19 @@ def extract_file_paths(prompt: str) -> list:
     pattern = r"\b[\w\/\-\.]+\.({})\b".format("|".join(exts))
     return re.findall(pattern, prompt, flags=re.IGNORECASE) and re.findall(pattern, prompt, flags=re.IGNORECASE)
 
+def run_sqlfluff_fix(content: str, filename: str) -> str:
+    """
+    Runs sqlfluff fix on the given SQL content and returns the fixed SQL.
+    """
+    # Use stdin input and specify filename for dialect/context
+    proc = subprocess.run([
+        "sqlfluff", "fix", "-",
+        "--dialect", "bigquery",
+        "--stdin-filename", filename
+    ], input=content.encode(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if proc.returncode != 0:
+        raise RuntimeError(f"SQLFluff fix failed for {filename}: {proc.stderr.decode()}")
+    return proc.stdout.decode()
 
 def generate_updated_content(original: str, prompt: str, file_type: str) -> str:
     """
@@ -62,7 +76,11 @@ def generate_updated_content(original: str, prompt: str, file_type: str) -> str:
         ],
         temperature=0
     )
-    return resp.choices[0].message.content.strip()
+    updated = resp.choices[0].message.content.strip()
+    # Run lint fix for SQL files
+    if file_type.lower() == 'sql':
+        updated = run_sqlfluff_fix(updated, path)
+    return updated
 
 
 def generate_summary(prompt: str) -> str:
