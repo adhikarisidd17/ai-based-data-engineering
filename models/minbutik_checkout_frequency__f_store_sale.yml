@@ -58,6 +58,9 @@ models:
       - name: d_pos_platform_code
       - name: is_receipt_store_sale
       - name: is_receipt_returns_only
+      - name: sale_discount_amount
+      - name: sale_discount_vat_amount
+      - name: total_sale_amount
 
     versions:
       - v: 5
