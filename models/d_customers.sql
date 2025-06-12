@@ -1,4 +1,4 @@
-To add a calculated column 'age' by subtracting the 'birthdate' (assuming 'dob' is the birthdate column) from the current date in the 'customer.sql' model, and to ensure that the 'age' column is included in the select statement in the 'stg_customer.sql' model, here are the updated contents for both files:
+Here are the updated contents for both the 'customer.sql' and 'stg_customer.sql' files:
 
 **customer.sql:**
 ```sql
@@ -26,4 +26,4 @@ from
   stg_customers
 ```
 
-Make sure to replace `stg_customers` with the actual staging table name if it differs.
+Make sure to verify that `stg_customers` is the correct name for your staging table.
