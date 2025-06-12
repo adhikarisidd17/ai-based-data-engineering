@@ -7,7 +7,7 @@ This project helps your team automate common data engineering tasks—like addin
 
 ## 📖 Overview
 
-1. **PR-Bot Service** (`/requests` endpoint)  
+**1. PR-Bot Service** (`/requests` endpoint)  
    - Receives a technical request: a list of file names plus a clear instruction for each file.  
    - Uses AI to update your dbt models (SQL/YAML), creates a draft pull request, and lets you iterate until you’re happy.
 
