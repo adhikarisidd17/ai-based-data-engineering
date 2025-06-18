@@ -110,11 +110,13 @@ def create_or_update_pr(session_id: str, analyst_prompt: str, file_names    : li
         original_prompt = info['prompt']
         # Confirmation
         if analyst_prompt.strip().lower() in CONFIRM_KEYWORDS:
-            new_title = generate_summary(original_prompt) or pr.title
-            pr.edit(title=new_title)
-            ready_url = mark_pr_ready(pr)
-            session_pr_map.pop(sid)
-            return f"PR #{pr.number} marked ready: {ready_url}"
+            clean = re.sub(r'[^\w\s]', '', analyst_prompt).strip().lower()
+            if clean in CONFIRM_KEYWORDS:
+                new_title = generate_summary(original_prompt) or pr.title
+                pr.edit(title=new_title)
+                ready_url = mark_pr_ready(pr)
+                session_pr_map.pop(sid)
+                return f"PR #{pr.number} marked ready: {ready_url}"
     else:
         branch_name = f"api/{uuid.uuid4().hex[:6]}"
         main_ref    = repo.get_git_ref(f"heads/{DEFAULT_BRANCH}")
