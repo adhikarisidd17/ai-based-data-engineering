@@ -1,8 +1,9 @@
 select
-  id,
-  name,
-  email,
-  phone_number,
-  dob
+    id,
+    name,
+    email,
+    phone_number,
+    dob,
+    customer_lifetime_value
 from
-  customers
+    customers
