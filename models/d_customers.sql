@@ -1,5 +1,4 @@
 select
-    id,
     name,
     email,
     phone_number,
