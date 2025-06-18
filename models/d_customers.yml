@@ -1,10 +1,37 @@
-SELECT
-    id,
-    name,
-    last_name,
-    email,
-    phone_number,
-    dob,
-    loyalty
-FROM
-    {{ ref('source_table') }}
+version: 2
+
+models:
+  - name: d_customers
+    description: "This model contains customer information including personal details and loyalty status."
+    columns:
+      - name: id
+        description: "Unique identifier for each customer."
+        tests:
+          - unique
+          - not_null
+      - name: name
+        description: "First name of the customer."
+        tests:
+          - not_null
+      - name: last_name
+        description: "Last name of the customer."
+        tests:
+          - not_null
+      - name: email
+        description: "Email address of the customer."
+        tests:
+          - unique
+          - not_null
+          - email
+      - name: phone_number
+        description: "Contact phone number of the customer."
+        tests:
+          - not_null
+      - name: dob
+        description: "Date of birth of the customer."
+        tests:
+          - not_null
+      - name: loyalty
+        description: "Loyalty status of the customer."
+        tests:
+          - not_null
