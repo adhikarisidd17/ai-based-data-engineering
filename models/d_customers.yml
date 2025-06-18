@@ -1,3 +1,18 @@
+SELECT 
+    id,
+    name,
+    last_name,
+    email,
+    phone_number,
+    dob,
+    CASE 
+        WHEN purchase_count > 10 THEN 'Gold'
+        WHEN purchase_count BETWEEN 5 AND 10 THEN 'Silver'
+        ELSE 'Bronze'
+    END AS loyalty
+FROM 
+    source_table; 
+
 version: 2
 
 models:
@@ -20,3 +35,6 @@ models:
         description: "Customer's phone number"
       - name: dob
         description: "Date of birth of the customer"
+      - name: loyalty
+        description: "Loyalty tier of the customer based on purchase history"
+        data_type: string
