@@ -4,6 +4,7 @@ select
     email,
     phone_number,
     dob,
-    created_at
+    created_at,
+    loyalty_points
 from
     customers
