@@ -1,3 +1,27 @@
+SELECT 
+    id,
+    name,
+    last_name,
+    email,
+    phone_number,
+    dob,
+    new_column
+FROM 
+    {{ ref('stg_customer') }}; 
+
+-- In 'models/staging/stg_customer.sql'
+SELECT 
+    id,
+    name,
+    last_name,
+    email,
+    phone_number,
+    dob,
+    new_column
+FROM 
+    source_table;
+
+-- In 'models/schema/customer.yml'
 version: 2
 
 models:
@@ -20,3 +44,6 @@ models:
         description: "Customer's phone number"
       - name: dob
         description: "Date of birth of the customer"
+      - name: new_column
+        description: "Description of the new column"
+        data_type: "data_type_of_new_column"
