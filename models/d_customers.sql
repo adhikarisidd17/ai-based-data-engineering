@@ -8,4 +8,14 @@ select
 from
     customers
 
--- Assuming loyalty is an INTEGER type, you may want to add logic to populate it based on your requirements.
+with loyalty as (
+    select
+        id,
+        case
+            when purchase_count > 10 then 1
+            when purchase_count > 5 then 0
+            else -1
+        end as loyalty
+    from
+        customer_purchases
+)
