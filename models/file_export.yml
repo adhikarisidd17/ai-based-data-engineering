@@ -52,7 +52,7 @@ files_batch:
       own_bucket:
         name: ica-parquet-export-prd-poc
         needed: True
-        service_account: batch-export-hmac@ag68-p-batch-export-prd-4855.iam.gserviceaccount.com
+        service_account: test@xyz.com
     deployment:
       schedule: 0 10 * * *
       #cloud_scheduler: 
