@@ -1,22 +1,9 @@
-version: 2
-
-models:
-  - name: d_customers
-    latest_version: 1
-    config:
-      materialized: table
-
-    description: "Table containing customer information for MinButik"
-    columns:
-      - name: id
-        description: "Unique identifier for the customer"
-      - name: name
-        description: "Customer's first name"
-      - name: last_name
-        description: "Customer's last name"
-      - name: email
-        description: "Customer's email address"
-      - name: phone_number
-        description: "Customer's phone number"
-      - name: dob
-        description: "Date of birth of the customer"
+SELECT
+    id,
+    name,
+    last_name,
+    email,
+    phone_number,
+    dob
+FROM
+    {{ ref('source_table') }};
