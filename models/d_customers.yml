@@ -8,8 +8,6 @@ models:
 
     description: "Table containing customer information for MinButik"
     columns:
-      - name: id
-        description: "Unique identifier for the customer"
       - name: name
         description: "Customer's first name"
       - name: last_name
