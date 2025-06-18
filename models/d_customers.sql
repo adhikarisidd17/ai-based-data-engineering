@@ -1,8 +1,9 @@
 select
-  id,
-  name,
-  email,
-  phone_number,
-  dob
+    id,
+    name,
+    email,
+    phone_number,
+    dob,
+    loyalty
 from
-  customers
+    customers
