@@ -20,3 +20,6 @@ models:
         description: "Customer's phone number"
       - name: dob
         description: "Date of birth of the customer"
+      - name: login
+        description: "Customer's login identifier"
+        data_type: string
