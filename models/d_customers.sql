@@ -8,7 +8,6 @@ select
 from
     customers
 
--- Updated models/customer.yml
 version: 2
 
 models:
