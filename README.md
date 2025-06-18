@@ -74,10 +74,11 @@ You can run the two services on different ports.
 This service edits files and creates pull requests.
 
 ```bash
-uvicorn ai_dbt_bot.main:app \
-  --reload \
-  --host 0.0.0.0 \
-  --port 8000
+poetry run uvicorn ai_dbt_bot.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+```bash
+poetry run uvicorn translator_service:app --reload --port 8001
 ```
 
 * **Endpoint**: `POST http://localhost:8000/requests`
